@@ -55,6 +55,9 @@ class ProductsList extends React.Component {
                         <Button transparent>
                             <Icon type="MaterialCommunityIcons" name='magnify' onPress={ () => this.props.navigation.navigate("ProductsSearch") } />
                         </Button>
+                        <Button transparent>
+                            <Icon type="MaterialIcons" name="list" onPress={ () => this.props.navigation.navigate("CategoriesScreen") } />
+                        </Button>
                     </Right>
                 </Header>
 

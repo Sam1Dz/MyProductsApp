@@ -1,5 +1,6 @@
 const initialState = {
     products: [],
+    searchProducts: [],
     isLoading: false,
     isFinish: false,
     isError: false
@@ -23,6 +24,28 @@ export default ProductsReducer = (state = initialState, action) => {
             }
 
         case 'GET_DATA_PRODUCTS_REJECTED':
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+        }
+
+        // SEARCH_DATA_PRODUCTS
+        case 'SEARCH_DATA_PRODUCTS_PENDING':
+            return {
+                ...state,
+			    isLoading: true
+            }
+
+        case 'SEARCH_DATA_PRODUCTS_FULFILLED':
+            return {
+                ...state,
+                isLoading: false,
+                isFinish: true,
+                searchProducts: action.payload.data.data
+            }
+
+        case 'SEARCH_DATA_PRODUCTS_REJECTED':
             return {
                 ...state,
                 isLoading: false,
