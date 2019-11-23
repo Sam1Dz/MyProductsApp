@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import { Container, Content, Header, Left, Body, Right, Title, View, Icon, Button, Item, Input, Text, Picker, Textarea, Form } from 'native-base';
-import Constants from 'expo-constants';
+
+import Styles from '../public/stylesheet/Styles';
 
 import { connect } from 'react-redux';
 import { addDataProducts } from '../public/redux/actions/ProductsAction'
@@ -38,9 +39,9 @@ class ProductAdd extends React.Component {
     render() {
         return (
             <Container>
-                <View style={style.statusBar} />
+                <View style={Styles.statusBar} />
 
-                <Header style={style.colorTheme}>
+                <Header style={Styles.colorTheme}>
                     <Left>
                         <Button transparent onPress={() => this.props.navigation.goBack()}>
                             <Icon name='arrow-back' />
@@ -58,14 +59,14 @@ class ProductAdd extends React.Component {
 
                 <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
                     <Content>
-                        <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 2, marginTop: 10, fontWeight: 'bold'}}>Product Name <Text style={{ fontSize: 15, lineHeight: 18, color: 'red' }}>*</Text> </Text>
-                        <Item regular style={{marginLeft: 5, marginRight: 5, paddingRight: 5, marginBottom: 5}}>
+                        <Text style={Styles.formTitleTop}>Product Name <Text style={Styles.formRequiredSysmbol}>*</Text> </Text>
+                        <Item regular style={Styles.formBox}>
                             <Input onChangeText={(title) => this.setState({title})} />
                         </Item>
 
-                        <Text style={{fontSize: 15, marginLeft: 5, marginTop: 5, marginBottom: 2, fontWeight: 'bold'}}>Product Category <Text style={{ fontSize: 15, lineHeight: 18, color: 'red' }}>*</Text></Text>
+                        <Text style={Styles.formTitle}>Product Category <Text style={Styles.formRequiredSysmbol}>*</Text></Text>
                         <Form>
-                            <Item regular picker style={{marginLeft: 5, marginRight: 5, paddingRight: 5, marginBottom: 5}}>
+                            <Item regular picker style={Styles.formBox}>
                                 <Picker
                                     mode="dropdown"
                                     iosIcon={<Icon name="arrow-down" />}
@@ -85,8 +86,8 @@ class ProductAdd extends React.Component {
                                 </Picker>
                             </Item>
                         </Form>
-                        <Text style={{fontSize: 15, marginLeft: 5, marginTop: 5, marginBottom: 2, fontWeight: 'bold'}}>Product Description</Text>
-                        <View style={{marginLeft: 5, marginRight: 5, marginBottom: 5}}>
+                        <Text style={Styles.formTitle}>Product Description</Text>
+                        <View style={Styles.formBoxTextarea}>
                             <Textarea rowSpan={11} bordered placeholder="Add Some Description" style={{ paddingTop: 5 }} onChangeText={(description) => this.setState({ description })} />
                         </View>
                     </Content>
@@ -101,15 +102,5 @@ const mapStateToProps = state => {
 		categoryList: state.CategoriesReducer
 	}
 }
-
-const style = StyleSheet.create({
-    statusBar: {
-        backgroundColor: "#3C3369",
-        height: Constants.statusBarHeight,
-    },
-    colorTheme: {
-        backgroundColor: "#3C3369"
-    }
-})
 
 export default connect(mapStateToProps)(ProductAdd);

@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-import { Container, Header, Left, Body, Right, Title, View, Icon, Fab, Content, ListItem, Button, Text } from 'native-base';
-import Constants from 'expo-constants';
+import { FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { Container, Header, Title, Right, Left, Body, View, Icon, Fab, Content, ListItem, Button, Text } from 'native-base';
+
+import Styles from '../public/stylesheet/Styles';
 
 import { connect } from 'react-redux';
 import { getDataProducts } from '../public/redux/actions/ProductsAction'
@@ -21,7 +22,7 @@ class ProductsList extends React.Component {
     }
 
     renderItem = ({ item }) => (
-        <ListItem avatar style={{ paddingRight:5 }} onPress={ () => this.props.navigation.navigate("ProductDetail", item)}>
+        <ListItem avatar style={{ paddingRight:5 }} onPress={ () => this.props.navigation.push("ProductDetail", item)}>
             <Left>
                 <Button small style={{ backgroundColor: "#3C3369" }}>
                     <Icon active name="apps" />
@@ -44,9 +45,10 @@ class ProductsList extends React.Component {
     render() {
         return (
             <Container>
-                <View style={style.statusBar} />
 
-                <Header noLeft style={style.colorTheme}>
+                <View style={Styles.statusBar} />
+
+                <Header noLeft style={Styles.colorTheme}>
                     <Left/>
                     <Body>
                         <Title>Product List</Title>
@@ -98,7 +100,7 @@ class ProductsList extends React.Component {
                 }
 
                 <Fab
-					style={style.colorTheme}
+					style={Styles.colorTheme}
                     position="bottomRight"
                     onPress={() => this.props.navigation.navigate('ProductsAdd')}
 				>
@@ -114,15 +116,5 @@ const mapStateToProps = state => {
 		productsReducer: state.ProductsReducer
 	}
 }
-
-const style = StyleSheet.create({
-    statusBar: {
-        backgroundColor: "#3C3369",
-        height: Constants.statusBarHeight,
-    },
-    colorTheme: {
-        backgroundColor: "#3C3369"
-    }
-})
 
 export default connect(mapStateToProps)(ProductsList);

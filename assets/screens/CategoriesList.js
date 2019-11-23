@@ -1,38 +1,35 @@
 import React from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { Container, Content, Header, Left, Body, Right, Title, View, Icon, Button, Text, ListItem } from 'native-base';
-import Constants from 'expo-constants';
+
+import Styles from '../public/stylesheet/Styles';
 
 import { connect } from 'react-redux';
 
 class CategoriesList extends React.Component {
     renderItem = ({ item }) => (
-        <ListItem avatar style={{ paddingRight:5 }} >
-            <Left>
-                <Button small style={{ backgroundColor: "#3C3369" }}>
-                    <Icon type="MaterialIcons" name='edit' />
-                </Button>
-            </Left>
-            <Body>
-                <Text numberOfLines={1} style={{fontWeight: 'bold'}}>{item.name}</Text>
-                <Text note> </Text>
-            </Body>
+        <ListItem style={{ marginRight: 10 }} >
+            <Text numberOfLines={1} style={{fontWeight: 'bold'}}>{item.name}</Text>
         </ListItem>
     )
 
     render() {
         return (
             <Container>
-                <View style={style.statusBar} />
+                <View style={Styles.statusBar} />
 
-                <Header noLeft style={style.colorTheme}>
-                    <Left/>
+                <Header style={Styles.colorTheme}>
+                    <Left>
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
                     <Body>
                         <Title>Category List</Title>
                     </Body>
                     <Right>
                         <Button transparent>
-                            <Icon name="add" />
+                            <Icon name="add" onPress={this.toggleModal} />
                         </Button>
                     </Right>
                 </Header>
@@ -75,15 +72,5 @@ const mapStateToProps = state => {
 		categoriesReducer: state.CategoriesReducer
 	}
 }
-
-const style = StyleSheet.create({
-    statusBar: {
-        backgroundColor: "#3C3369",
-        height: Constants.statusBarHeight,
-    },
-    colorTheme: {
-        backgroundColor: "#3C3369"
-    }
-})
 
 export default connect(mapStateToProps)(CategoriesList);
