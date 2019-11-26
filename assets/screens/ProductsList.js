@@ -5,19 +5,30 @@ import { Container, Header, Title, Right, Left, Body, View, Icon, Fab, Content, 
 import Styles from '../public/stylesheet/Styles';
 
 import { connect } from 'react-redux';
-import { getDataProducts } from '../public/redux/actions/ProductsAction'
+import { getDataProducts, getDataProductsMore } from '../public/redux/actions/ProductsAction'
 import { getDataCategories } from '../public/redux/actions/CategoriesAction'
 
 class ProductsList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-			refreshingData: false
+            refreshingData: false,
+            page: 1
 		}
     }
 
+    produtsNextPage = () => {
+        if(this.state.page < this.props.productsReducer.totalPage) {
+            this.setState({
+                page: this.state.page + 1
+            }, () => {
+                this.props.dispatch(getDataProductsMore(this.state.page));
+            })
+        }
+    }
+
     componentDidMount() {
-        this.props.dispatch(getDataProducts());
+        this.props.dispatch(getDataProducts(this.state.page));
         this.props.dispatch(getDataCategories());
     }
 
@@ -36,10 +47,10 @@ class ProductsList extends React.Component {
     )
 
     refreshData = () => {
-		this.setState({refreshingData: true});
+		this.setState({refreshingData: true, page: 1});
 		this.props.dispatch(getDataProducts()).then(() => {
 			this.setState({refreshingData: false});
-		})
+        })
 	}
 
     render() {
@@ -81,18 +92,15 @@ class ProductsList extends React.Component {
                     )
                     :
                     (
-                        <Content>
+                        <Content refreshControl={ <RefreshControl refreshing={ this.state.refreshingData } onRefresh={ this.refreshData.bind(this) } /> }>
                             <View style={{ flex: 1 }}>
 							    <FlatList
                                     data={ this.props.productsReducer.products }
                                     keyExtractor={(item) => item.id.toString()}
-                                    refreshControl={
-										<RefreshControl
-											refreshing={ this.state.refreshingData }
-											onRefresh={ this.refreshData }
-										/>
-									}
-								    renderItem={this.renderItem}
+                                    onEndReached={this.produtsNextPage.bind(this)}
+                                    onEndReachedThreshold={0.1}
+                                    ListFooterComponent={() => this.props.productsReducer.isLoadingOnNextPage ? <ActivityIndicator style={{ marginTop: 5 }} size="large" color="#3C3369"/> : null }
+                                    renderItem={this.renderItem}
 							    />
 						    </View>
                         </Content>

@@ -7,6 +7,8 @@ import ProductDetail from '../../screens/ProductDetail';
 import ProductsEdit from '../../screens/ProductEdit';
 import ProductsAdd from '../../screens/ProductAdd';
 import CategoriesScreen from '../../screens/CategoriesList';
+import CategoryAdd from '../../screens/CategoryAdd';
+import CategoryEdit from '../../screens/CategoryEdit';
 
 const href = createStackNavigator(
 	{
@@ -15,7 +17,9 @@ const href = createStackNavigator(
 		ProductDetail,
         ProductsEdit,
         ProductsAdd,
-        CategoriesScreen
+        CategoriesScreen,
+        CategoryAdd,
+        CategoryEdit
     },
     {
         headerMode: 'none'

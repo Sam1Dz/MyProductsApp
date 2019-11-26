@@ -1,7 +1,10 @@
 const initialState = {
     products: [],
     searchProducts: [],
+    totalPage: 0,
+    searchTotalPage: 0,
     isLoading: false,
+    isLoadingOnNextPage: false,
     isFinish: false,
     isError: false
 }
@@ -20,6 +23,7 @@ export default ProductsReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 isFinish: true,
+                totalPage: action.payload.data.totalPage,
                 products: action.payload.data.data
             }
 
@@ -27,6 +31,28 @@ export default ProductsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
+                isError: true
+        }
+
+        // GET_DATA_PRODUCTS_MORE
+        case 'GET_DATA_PRODUCTS_MORE_PENDING':
+            return {
+                ...state,
+			    isLoadingOnNextPage: true
+            }
+
+        case 'GET_DATA_PRODUCTS_MORE_FULFILLED':
+            return {
+                ...state,
+                isLoadingOnNextPage: false,
+                isFinish: true,
+                products: state.products.concat(action.payload.data.data)
+            }
+
+        case 'GET_DATA_PRODUCTS_MORE_REJECTED':
+            return {
+                ...state,
+                isLoadingOnNextPage: false,
                 isError: true
         }
 
@@ -42,6 +68,7 @@ export default ProductsReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 isFinish: true,
+                searchTotalPage: action.payload.data.totalPage,
                 searchProducts: action.payload.data.data
             }
 
@@ -49,6 +76,28 @@ export default ProductsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
+                isError: true
+        }
+
+        // SEARCH_DATA_PRODUCTS_MORE
+        case 'SEARCH_DATA_PRODUCTS_MORE_PENDING':
+            return {
+                ...state,
+			    isLoadingOnNextPage: true
+            }
+
+        case 'SEARCH_DATA_PRODUCTS_MORE_FULFILLED':
+            return {
+                ...state,
+                isLoadingOnNextPage: false,
+                isFinish: true,
+                searchProducts: state.searchProducts.concat(action.payload.data.data)
+            }
+
+        case 'SEARCH_DATA_PRODUCTS_MORE_REJECTED':
+            return {
+                ...state,
+                isLoadingOnNextPage: false,
                 isError: true
         }
 

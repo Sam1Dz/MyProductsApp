@@ -6,7 +6,7 @@ import lodash from 'lodash';
 import Styles from '../public/stylesheet/Styles';
 
 import { connect } from 'react-redux';
-import { searchDataProducts } from '../public/redux/actions/ProductsAction'
+import { searchDataProducts, searchDataProductsMore } from '../public/redux/actions/ProductsAction'
 
 class ProductsSearch extends React.Component {
     constructor(props) {
@@ -18,8 +18,22 @@ class ProductsSearch extends React.Component {
     }
 
     search = (value) => {
-        this.setState.search = value;
-        this.props.dispatch(searchDataProducts(value));
+        this.setState({
+            search: value,
+            page: 1
+        }, () => {
+            this.props.dispatch(searchDataProducts(this.state.search));
+        });
+    }
+
+    searchProdutsNextPage = () => {
+        if(this.state.page < this.props.productsReducer.searchTotalPage) {
+            this.setState({
+                page: this.state.page + 1
+            }, () => {
+                this.props.dispatch(searchDataProductsMore(this.state.search, this.state.page));
+            })
+        }
     }
 
     renderItem = ({ item }) => (
@@ -71,6 +85,9 @@ class ProductsSearch extends React.Component {
 							    <FlatList
                                     data={ this.props.productsReducer.searchProducts }
                                     keyExtractor={(item) => item.id.toString()}
+                                    onEndReached={this.searchProdutsNextPage.bind(this)}
+                                    onEndReachedThreshold={0.1}
+                                    ListFooterComponent={() => this.props.productsReducer.isLoadingOnNextPage ? <ActivityIndicator style={{ marginTop: 5 }} size="large" color="#3C3369"/> : null }
                                     renderItem={this.renderItem}
 							    />
 						    </View>
